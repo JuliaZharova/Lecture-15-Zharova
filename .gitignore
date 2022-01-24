@@ -2,3 +2,4 @@
 out
 # IntelliJ
 *.iml
+.target

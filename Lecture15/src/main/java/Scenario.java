@@ -2,16 +2,14 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static io.netty.handler.codec.http.multipart.DiskFileUpload.prefix;
 
 public class Scenario {
     static WebDriver driver;
@@ -51,14 +49,17 @@ public class Scenario {
         categoryName.click();
         System.out.println(driver.getCurrentUrl());
 
+        new WebDriverWait(driver, Duration.ofSeconds(20))
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//img[@alt=\"Уход за домом и одеждой\"]")));
         WebElement productCategory = driver.findElement(By.xpath("//img[@alt=\"Уход за домом и одеждой\"]"));
         System.out.println("Product category is " + productCategory);
+        System.out.println("Product category is displayed: " + productCategory.isDisplayed());
         System.out.println(driver.getCurrentUrl());
         productCategory.click();
     }
 
     public static void checkLabelChoiceRozetka() {
-        WebElement labelChoiceRozetka = driver.findElement(By.xpath("//li[1]//div[2]/span"));
+        WebElement labelChoiceRozetka = driver.findElement(By.xpath("//span[@class=\"goods-tile__label promo-label promo-label_type_recomended ng-star-inserted\"]"));
         System.out.println(labelChoiceRozetka.getText());
         Color backgroundColorLabelChoiceRozetka = Color.fromString(labelChoiceRozetka.getCssValue("background-color"));
         System.out.println("Label Choice Rozetka is blue: " + backgroundColorLabelChoiceRozetka.equals(RGB_COLOUR_LABEL_BACKGROUND_CHOICE_ROZETKA));
@@ -68,7 +69,7 @@ public class Scenario {
     }
 
     public static void checkLabelTopSale() {
-        WebElement labelTopSale = driver.findElement(By.xpath("//li[2]//div[2]/span"));
+        WebElement labelTopSale = driver.findElement(By.xpath("//span[@class=\"goods-tile__label promo-label promo-label_type_popularity ng-star-inserted\"]"));
         System.out.println(labelTopSale.getText());
         Color backgroundColorLabelTopSale = Color.fromString(labelTopSale.getCssValue("background-color"));
         System.out.println("Label Top Sale is orange: " + backgroundColorLabelTopSale.equals(RGB_COLOUR_LABEL_BACKGROUND_TOP_SALE));
@@ -78,12 +79,12 @@ public class Scenario {
     }
 
     public static void checkLabelDiscount() {
-        WebElement labelDiscount = driver.findElement(By.xpath("//li[5]//div[2]/span"));
+        WebElement labelDiscount = driver.findElement(By.xpath("//span[@class=\"goods-tile__label promo-label promo-label_type_action ng-star-inserted\"]"));
         System.out.println(labelDiscount.getText());
         Color backgroundColorLabelDiscount = Color.fromString(labelDiscount.getCssValue("background-color"));
-        System.out.println("Label Top Sale is red: " + backgroundColorLabelDiscount.equals(HEX_COLOUR_LABEL_BACKGROUND_DISCOUNT));
+        System.out.println("Label Discount is red: " + backgroundColorLabelDiscount.equals(HEX_COLOUR_LABEL_BACKGROUND_DISCOUNT));
         Color labelTextDiscount = Color.fromString(labelDiscount.getCssValue("color"));
-        System.out.println("Label text is white: " + labelDiscount.equals(HEX_COLOUR_LABEL_TEXT_DISCOUNT));
+        System.out.println("Label text is white: " + labelTextDiscount.equals(HEX_COLOUR_LABEL_TEXT_DISCOUNT));
     }
 
     public static void scenario2 () {
@@ -96,6 +97,8 @@ public class Scenario {
             Actions actionProvider = new Actions(driver);
             actionProvider.moveToElement(driver.findElement(By.xpath("//img[@src=\"https://content1.rozetka.com.ua/goods/images/big_tile/123733145.jpg\"]"))).build().perform();
 
+            new WebDriverWait(driver, Duration.ofSeconds(20))
+                    .until(ExpectedConditions.elementToBeClickable(By.xpath("//img[@src=\"https://content1.rozetka.com.ua/goods/images/big_tile/123733145.jpg\"]")));
             WebElement chosenProduct = driver.findElement(By.xpath("//img[@src=\"https://content1.rozetka.com.ua/goods/images/big_tile/123733145.jpg\"]"));
             System.out.println(chosenProduct.isEnabled());
             chosenProduct.click();
